@@ -9,7 +9,7 @@
  *	I acknowledge all content contained herein, excluding template or example
  *	code, is my own original work.
  *
- *	Demo Link: Youtube URL> https://www.youtube.com/watch?v=5uxRma6EHHg
+ *	Demo Link: Youtube URL> https://www.youtube.com/watch?v=flgG6p3SZv8
  */
 #include <avr/io.h>
 #include <avr/interrupt.h>
@@ -60,7 +60,7 @@ void TimerSet(unsigned long M){
 }
 
 
-enum LED_States{LED_Start, LED_ZeroOn, LED_OneOn, LED_TwoOn, LED_Wait1, LED_Wait2}LED_State;
+enum LED_States{LED_Start, LED_ZeroOn, LED_OneOn, LED_OneOn2, LED_TwoOn, LED_Wait1, LED_Wait2}LED_State;
 
 void TickFct_LED(){
 
@@ -93,12 +93,22 @@ void TickFct_LED(){
 
 		case LED_TwoOn:
 		if(temp == 0x00){
-		LED_State = LED_ZeroOn;
+		LED_State = LED_OneOn2;
 		}
 		else{
 		LED_State = LED_Wait1;
 		}
 		break;
+
+		case LED_OneOn2:
+		if(temp == 0x00){
+                LED_State = LED_ZeroOn;
+                }
+                else{
+                LED_State = LED_Wait1;
+                }
+                break;
+
 
 		case LED_Wait1:
 		if(temp == 0x00){
@@ -129,6 +139,7 @@ void TickFct_LED(){
 		break;
 
 		case LED_OneOn:
+		case LED_OneOn2:
 		PORTB = 0x02;
 		break;
 
